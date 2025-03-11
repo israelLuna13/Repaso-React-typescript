@@ -1,4 +1,4 @@
-//mongodb+srv://root:HQosKaeF3SPFFtv8@hackmty.2ch82.mongodb.net/veterianria
+
 import colors from 'colors'
 import dotenv from 'dotenv'
 import mongoose from "mongoose";

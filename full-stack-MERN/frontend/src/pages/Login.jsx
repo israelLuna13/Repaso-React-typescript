@@ -7,7 +7,7 @@ export default function Login() {
                     className='text-blue-600 font-black text-6xl'>
                     Login y Administra Tus <span className='text-black'>Pacientes</span></h1>
             </div>
-            <div>
+            <div className='mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white'>
                 <form action="">
                     <div className='my-5'>
                         <label className='uppercase text-gray-600 block text-xl text-bold' htmlFor="">Email</label>
