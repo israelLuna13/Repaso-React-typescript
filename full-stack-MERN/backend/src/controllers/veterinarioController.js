@@ -1,9 +1,10 @@
 import Veterinario from "../models/Veterinaria.js";
 import { generateJWT } from "../helpers/generateJWT.js";
+import emailRegister from "../helpers/emailRegister.js";
 import colors from "colors";
 import generateId from "../helpers/generateId.js";
 export const register = async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, name } = req.body;
 
   try {
     const user = await Veterinario.findOne({ email });
@@ -15,8 +16,14 @@ export const register = async (req, res) => {
 
     const veterinario = new Veterinario(req.body);
     ///const veterinarioSaved = await veterinario.save()
-    await veterinario.save();
-    res.status(201).send("User creates");
+    const veterinarioSaved = await veterinario.save();
+
+    //send email
+    emailRegister({
+      email,
+      name,
+      token:veterinarioSaved.token})
+    res.status(201).send("User created, check your email");
   } catch (error) {
     console.log(`======================`);
     console.log(colors.bgRed.black.bold(error.message));

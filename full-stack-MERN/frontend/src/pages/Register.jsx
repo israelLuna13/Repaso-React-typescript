@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import Alert from '../components/Alert'
+import clientAxios from '../config/axios.js'
 export default function Register() {
   const [name,setName]= useState('')
   const [email,setEmail] = useState('')
@@ -9,8 +10,10 @@ export default function Register() {
 
   const [alert,setAlert]= useState({})
   const {msg} = alert
-  const handleSubmit = e => {
+  
+  const handleSubmit =async  e => {
     e.preventDefault()
+
     if ([name, email, password, repitPassword].includes('')) {
       setAlert({msg:'There are empty inputs',error:true})
       return
@@ -27,6 +30,21 @@ export default function Register() {
     setAlert({})
 
     //create user
+    try {
+      const url = `/veterinarios/register`
+
+       await clientAxios.post(url,{
+        name,
+        email,
+        password
+      })
+      setAlert({msg:'User created',error:false})
+      
+    } catch (error) {
+      console.log(error);
+     setAlert({msg:error.response.data.msg,error:true})
+      
+    }
 
   }
   
@@ -41,6 +59,7 @@ export default function Register() {
       <div className='mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white'>
 
         { msg &&  <Alert alert={alert}/>}
+        
         <form action="" onSubmit={handleSubmit}>
        
           <div className='my-5'>
