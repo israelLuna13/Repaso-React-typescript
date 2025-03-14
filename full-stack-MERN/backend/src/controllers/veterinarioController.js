@@ -3,6 +3,7 @@ import { generateJWT } from "../helpers/generateJWT.js";
 import emailRegister from "../helpers/emailRegister.js";
 import colors from "colors";
 import generateId from "../helpers/generateId.js";
+import emailForgotPassword from "../helpers/emailForgotPassword.js";
 export const register = async (req, res) => {
   const { email, name } = req.body;
 
@@ -92,7 +93,7 @@ export const login = async (req, res) => {
 
 //send email with token
 export const forgotPassword = async (req, res) => {
-  const { email } = req.body;
+  const { email} = req.body;
 
   try {
     const existVeterinario = await Veterinario.findOne({ email });
@@ -104,6 +105,14 @@ export const forgotPassword = async (req, res) => {
 
     existVeterinario.token = generateId();
     await existVeterinario.save();
+
+    //send email
+    emailForgotPassword({
+      email,
+      name: existVeterinario.name,
+      token: existVeterinario.token,
+    });
+
     res.json({ msg: "We have send email about instructions" });
   } catch (error) {
     console.log(`======================`);

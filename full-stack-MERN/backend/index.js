@@ -12,7 +12,7 @@ dotenv.config()
 connectionDB()
 
 //cors
-const domainsEnables = [process.env.FRONT_URL]
+const domainsEnables = [process.env.FRONT_URL,undefined]
 
 const corsOptios={
     origin: function(origin,callback){
