@@ -6,13 +6,15 @@ import clientAxios from '../config/axios';
 
 export default function Login() {
     const navigate = useNavigate()
-    const { auth, setAuth } = useAuth()//context
+    const { setAuth } = useAuth()//context
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [alert, setAlert] = useState({})
 
     const { msg } = alert
 
+    //put data of user in the context
     const handleSubmit = async (e) => {
         e.preventDefault()
         if ([email, password].includes('')) {
@@ -22,6 +24,7 @@ export default function Login() {
         try {
             const { data } = await clientAxios.post('/veterinarios/login', { email, password })
             localStorage.setItem('token', data.token)
+            setAuth(data)
             navigate('/admin')
         } catch (error) {
             setAlert({ msg: error.response.data.msg, error: true })
@@ -36,20 +39,28 @@ export default function Login() {
                     Login y Manage yours <span className='text-black'>Patients</span></h1>
             </div>
             <div className='mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white'>
-                
+
                 {msg && <Alert alert={alert} />}
                 <form action="" onSubmit={handleSubmit}>
                     <div className='my-5'>
                         <label className='uppercase text-gray-600 block text-xl text-bold' htmlFor="">Email</label>
-                        <input className='border w-full p-3 mt-3 bg-gray-50 rounded-xl' type="email" placeholder='Email register' value={email} onChange={e => setEmail(e.target.value)} />
+                        <input className='border w-full p-3 mt-3 bg-gray-50 rounded-xl'
+                            type="email" placeholder='Email register'
+                            value={email}
+                            onChange={e => setEmail(e.target.value)} />
                     </div>
                     <div className='my-5'>
                         <label className='uppercase text-gray-600 block text-xl text-bold' htmlFor="">Password</label>
-                        <input className='border w-full p-3 mt-3 bg-gray-50 rounded-xl' type="password" placeholder='Your password'
-                            value={password} onChange={e => setPassword(e.target.value)} />
+                        <input className='border w-full p-3 mt-3 bg-gray-50 rounded-xl'
+                            type="password"
+                            placeholder='Your password'
+                            value={password}
+                            onChange={e => setPassword(e.target.value)} />
                     </div>
 
-                    <input type="submit" value="Login" className='bg-blue-700 w-full rounded-xl p-3 text-white uppercase px-10 font-bold mt-5 hover:cursor-pointer hover:bg-blue-900 md:w-auto' />
+                    <input type="submit" 
+                    value="Login" 
+                    className='bg-blue-700 w-full rounded-xl p-3 text-white uppercase px-10 font-bold mt-5 hover:cursor-pointer hover:bg-blue-900 md:w-auto' />
                 </form>
 
                 <div>

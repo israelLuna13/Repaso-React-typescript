@@ -83,7 +83,12 @@ export const login = async (req, res) => {
       res.status(403).json({ msg: error.message });
       return;
     }
-    res.json({ token: generateJWT(userExist._id) });
+    res.json({
+      _id:userExist._id,
+      name:userExist.name,
+      email:userExist.email,
+      token:generateJWT(userExist._id)
+    });
   } catch (error) {
     console.log(`======================`);
     console.log(colors.bgRed.black.bold(error.message));
