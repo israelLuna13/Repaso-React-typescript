@@ -36,7 +36,7 @@ export default function Login() {
             <div>
                 <h1
                     className='text-blue-600 font-black text-6xl'>
-                    Login y Manage yours <span className='text-black'>Patients</span></h1>
+                    Login and Manage yours <span className='text-black'>Patients</span></h1>
             </div>
             <div className='mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white'>
 

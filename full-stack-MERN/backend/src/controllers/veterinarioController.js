@@ -159,3 +159,72 @@ export const newPassword = async (req, res) => {
     console.log(`======================`);
   }
 };
+
+export const updateProfile= async(req,res)=>{
+ 
+  const {email} = req.body
+
+  try {
+    const veterinario = await Veterinario.findById(req.params.id)
+    if(!veterinario)
+    {
+      const error = new Error('There is error')
+      res.status(400).json({msg:error.message})
+      return
+    }  
+    if(veterinario.email !== email)
+    {
+      const existEmail = await Veterinario.findOne({email})
+      if(existEmail)
+      {
+        const error = new Error('Email already exist')
+        res.status(400).json({msg:error.message})
+        return
+      }
+    }
+    veterinario.name = req.body.name
+    veterinario.email = req.body.email
+    veterinario.phone = req.body.phone
+    veterinario.web = req.body.web
+
+    const veterianrioSaved = await veterinario.save()
+    res.json(veterianrioSaved)
+  } catch (error) {
+    console.log(`======================`);
+    console.log(colors.bgRed.black.bold(error.message));
+    console.log(`======================`);
+  }
+}
+
+export const updatePassword = async(req,res)=>{
+
+  const {_id} = req.veterinario
+  const {new_password,current_password}=req.body
+  try {
+    
+  const existVeterinario = await Veterinario.findById(_id);
+  if (!existVeterinario) {
+    const error = new Error("User do not exist");
+    res.status(400).json({ msg: error.message });
+    return;
+  }
+
+  if(await existVeterinario.checkPassword(current_password))
+  {
+    existVeterinario.password = new_password
+    await existVeterinario.save()
+    res.json({msg:'Password saved successfully'})
+    
+  }else{
+    const error = new Error("Current password is incorrect");
+    res.status(400).json({msg:error.message})
+    return
+  }
+  
+  } catch (error) {
+    console.log(`======================`);
+    console.log(colors.bgRed.black.bold(error.message));
+    console.log(`======================`);
+  }
+
+}

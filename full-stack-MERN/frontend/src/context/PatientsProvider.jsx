@@ -1,16 +1,19 @@
 import { createContext, useState, useEffect } from "react";
-
+import useAuth from '../hooks/useAuth'
 import clientAxios from "../config/axios";
+
 
 
 const PatientsContext = createContext()
 
 export const PacientsProvider = ({ children }) => {
 
+    const { auth } = useAuth()
+
     const [patients, setPatients] = useState([])//all patients of a doctor
     const [patient, setPatient] = useState({})// one patient
 
-    //when the component be fine, will get all patients of a doctor
+    //when the component be fine and when the user in session change, will get all patients of a doctor
     useEffect(() => {
         const getPatients = async () => {
             try {
@@ -23,7 +26,6 @@ export const PacientsProvider = ({ children }) => {
                         Authorization: `Bearer ${token}`
                     }
                 }
-
                 const { data } = await clientAxios.get('/pacientes', config)
                 setPatients(data)
             } catch (error) {
@@ -31,13 +33,11 @@ export const PacientsProvider = ({ children }) => {
             }
         }
         getPatients()
-
-    }, [])
+    }, [auth])
 
     const savePatient = async (patient) => {
 
         const token = localStorage.getItem('token')
-
         const config = {
             headers: {
                 "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export const PacientsProvider = ({ children }) => {
             try {
                 const { data } = await clientAxios.delete(`/pacientes/${id}`, config)
 
-                //get patients do not delet
+                //get patients do not want to delet
                 const patientUpdated = patients.filter(patientsState => patientsState._id != id)
                 setPatients(patientUpdated)
             } catch (error) {

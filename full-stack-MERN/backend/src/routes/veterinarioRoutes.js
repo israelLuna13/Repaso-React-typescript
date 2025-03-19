@@ -6,7 +6,9 @@ import {
   login,
   forgotPassword,
   CheckToken,
-  newPassword
+  newPassword,
+  updateProfile,
+  updatePassword
 } from "../controllers/veterinarioController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
@@ -22,5 +24,7 @@ router.post("/forgot-password/:token",newPassword)
 
 //
 router.get("/profile", checkAuth, profile);
+router.put("/profile/:id",checkAuth,updateProfile)
+router.put("/update-password",checkAuth,updatePassword)
 
 export default router;

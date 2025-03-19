@@ -12,7 +12,7 @@ export default function Header() {
                     <nav className="flex flex-col items-center lg:flex-row gap-4 mt-5 lg:mt-0">
                         <Link to="/admin" className="text-white text-xl lg:text-sm uppercase font-bold "> Patients
                         </Link>
-                        <Link to="/admin" className="text-white text-xl lg:text-sm uppercase font-bold"> Profile
+                        <Link to="/admin/profile" className="text-white text-xl lg:text-sm uppercase font-bold"> Profile
                         </Link>
 
                         <button onClick={logout} className="text-white text-xl lg:text-sm uppercase font-bold" type="button">Logout</button>
