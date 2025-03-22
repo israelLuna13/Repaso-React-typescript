@@ -5,25 +5,12 @@ import cors from 'cors'
 import connectionDB from './src/config/db.js'
 import veterinarioRoutes from "./src/routes/veterinarioRoutes.js"
 import pacienteRoutes from "./src/routes/pacientesRoutes.js"
+import { corsOptios } from './src/config/cors.js'
 const app = express()
 
 dotenv.config()
 
 connectionDB()
-
-//cors
-const domainsEnables = [process.env.FRONT_URL,undefined]
-
-const corsOptios={
-    origin: function(origin,callback){
-        if(domainsEnables.indexOf(origin) !== -1)
-        {
-            callback(null,true)
-        }else{
-            callback(new Error('Denied access for cors'))
-        }
-    }
-}
 
 app.use(cors(corsOptios))
 

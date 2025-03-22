@@ -3,6 +3,7 @@ import Form from "../components/Form";
 import ListPatients from "../components/ListPatients";
 
 export default function AdminPatients() {
+  //the form only will show when the screen has size medium, when has size small the button will show to hidden or show
   const [showForm,setShowForm] = useState(false)
   return (
     <>

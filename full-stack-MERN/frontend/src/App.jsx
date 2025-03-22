@@ -11,38 +11,43 @@ import AdminLayout from "./layout/AdminLayout"
 import AdminPatients from "./pages/AdminPatients"
 import EditProfile from "./pages/EditProfile"
 import ChangePassword from "./pages/ChangePassword"
+import { ConfigProvider } from "./context/ConfigProvider"
 function App() {
 
   return (
     <BrowserRouter>
       {/* context */}
+      <ConfigProvider>
       <AuthProvider>
 
-        <PacientsProvider>
+<PacientsProvider>
 
-          {/* all this routes will have access to global state */}
-          <Routes>
-            {/* public area */}
-            <Route element={<AuthLayout />}>
-              <Route path="/" element={<Login />} index />
-              <Route path="/register" element={<Register />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/forgot-password/:token" element={<NewPassword />} />
-              <Route path="/confirm/:id" element={<ConfirmAccount />} />
-            </Route>
+  {/* all this routes will have access to global state */}
+  <Routes>
+    {/* public area */}
+    <Route element={<AuthLayout />}>
+      <Route path="/" element={<Login />} index />
+      <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/forgot-password/:token" element={<NewPassword />} />
+      <Route path="/confirm/:id" element={<ConfirmAccount />} />
+    </Route>
 
-             {/* private area */}
-            <Route element={<AdminLayout />}>
-              <Route path="/admin" element={<AdminPatients />} index />
-              <Route path="/admin/profile" element={<EditProfile />} index />
-              <Route path="/admin/change-password" element={<ChangePassword/>}/>
-            </Route>
+     {/* private area */}
+    <Route element={<AdminLayout />}>
+      <Route path="/admin" element={<AdminPatients />} index />
+      <Route path="/admin/profile" element={<EditProfile />} index />
+      <Route path="/admin/change-password" element={<ChangePassword/>}/>
+    </Route>
 
-          </Routes>
-        </PacientsProvider>
+  </Routes>
+</PacientsProvider>
 
 
-      </AuthProvider>
+</AuthProvider>
+
+      </ConfigProvider>
+      
     </BrowserRouter>
   )
 }

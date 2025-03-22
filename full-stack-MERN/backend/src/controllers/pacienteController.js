@@ -11,15 +11,12 @@ export const addPaciente=async(req,res)=>{
     try {
         const pacienteSaved = await paciente.save()
         res.json(pacienteSaved)
-
-        
     } catch (error) {
         console.log(`======================`);
         console.log(colors.bgRed.black.bold(error.message));
         console.log(`======================`);
     }
 }
-
 
 export const getPacientes=async(req,res)=>{
 

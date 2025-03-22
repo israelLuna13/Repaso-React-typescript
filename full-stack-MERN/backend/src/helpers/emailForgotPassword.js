@@ -1,15 +1,6 @@
-import nodemailer from 'nodemailer'
-
+import { transport } from '../config/email.js'
 const emailForgotPassword = async(data) => {
-    const transport = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: +process.env.EMAIL_PORT,
-        auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-        }
-    })
-
+    
     const {email,name,token} = data
     const info = await transport.sendMail({
         from:"APV - Administrador de Pacientes de Veterinaria",
