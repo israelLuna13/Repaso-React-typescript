@@ -17,15 +17,17 @@ const AuthProvider = ({ children }) => {
                 return
             }
             //configuration to add bearer token to have acces other routes
-            const config = {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                }
-            }
+            // const config = {
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         Authorization: `Bearer ${token}`
+            //     }
+            // }
             //Get data of user on session and put the data in the global state
             try {
-                const { data } = await clientAxios.get('/veterinarios/profile', config)
+                // const { data } = await clientAxios.get('/veterinarios/profile', config)
+                const { data } = await clientAxios.get('/veterinarios/profile')
+
                 setAuth(data.profile);
             } catch (error) {
                 console.log(error.response.data.msg);

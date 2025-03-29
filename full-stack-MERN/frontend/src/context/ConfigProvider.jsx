@@ -15,15 +15,15 @@ const ConfigProvider=({children})=>{
     },[token])
 
      //configuration to add bearer token to have acces other routes
-     const config = {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        }
-    }
+    //  const config = {
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`
+    //     }
+    // }
 
     return(
-        <ConfigContext.Provider value={{token,setToken,config,load,setLoad}}>
+        <ConfigContext.Provider value={{token,setToken,load,setLoad}}>
             {children}
         </ConfigContext.Provider>
     )

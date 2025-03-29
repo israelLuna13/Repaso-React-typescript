@@ -20,13 +20,13 @@ export const PacientsProvider = ({ children }) => {
                 const token = localStorage.getItem('token')
                 if (!token) return
 
-                const config = {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-                const { data } = await clientAxios.get('/pacientes', config)
+                // const config = {
+                //     headers: {
+                //         "Content-Type": "application/json",
+                //         Authorization: `Bearer ${token}`
+                //     }
+                // }
+                const { data } = await clientAxios.get('/pacientes')
                 setPatients(data)
             } catch (error) {
                 console.log(error.reponse.data.msg);
