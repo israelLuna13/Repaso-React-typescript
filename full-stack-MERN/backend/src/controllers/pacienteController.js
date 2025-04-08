@@ -1,6 +1,5 @@
 import Paciente from "../models/Paciente.js";
 import mongoose from "mongoose";
-
 import colors from 'colors'
 
 export const addPaciente=async(req,res)=>{
@@ -26,21 +25,23 @@ export const getPacientes=async(req,res)=>{
 }
 
 export const getPaciente = async (req, res) => {
-  const { id } = req.params;
+//  const { id } = req.params;
+  const {patient} = req
 
   try {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ msg: "Invalid ID format" });
-    }
-    const paciente = await Paciente.findById(id);
-    if (!paciente) {
-      res.status(404).json({ msg: "Do not exist" });
-    }
-    if (paciente.veterinario._id.toString() !== req.veterinario.id.toString()) {
-      res.json({ msg: "Error authenticate" });
-      return;
-    }
-    res.json(paciente);
+    // if (!mongoose.Types.ObjectId.isValid(id)) {
+    //   return res.status(400).json({ msg: "Invalid ID format" });
+    // }
+    // const paciente = await Paciente.findById(id);
+    // if (!paciente) {
+    //   res.status(404).json({ msg: "Do not exist" });
+    // }
+    
+    // if (patient.veterinario._id.toString() !== req.veterinario.id.toString()) {
+    //   res.json({ msg: "Error authenticate" });
+    //   return;
+    // }
+    res.json(patient);
   } catch (error) {
     console.log(`======================`);
     console.log(colors.bgRed.black.bold(error.message));
@@ -48,32 +49,34 @@ export const getPaciente = async (req, res) => {
   }
 };
 export const updatePaciente = async (req, res) => {
-  const { id } = req.params;
+ // const { id } = req.params;
+ const {patient} = req
+
 
   try {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ msg: "Invalid ID format" });
-    }
-    const paciente = await Paciente.findById(id);
-    if(!paciente)
-        {
-            res.status(404).json({ msg: "Do not exist" });
-            return
-        }
+    // if (!mongoose.Types.ObjectId.isValid(id)) {
+    //   return res.status(400).json({ msg: "Invalid ID format" });
+    // }
+    // const paciente = await Paciente.findById(id);
+    // if(!paciente)
+    //     {
+    //         res.status(404).json({ msg: "Do not exist" });
+    //         return
+    //     }
     
-    if (paciente.veterinario._id.toString() !== req.veterinario.id.toString()) {
-      res.json({ msg: "Error authenticate" });
-      return;
-    }
+    // if (paciente.veterinario._id.toString() !== req.veterinario.id.toString()) {
+    //   res.json({ msg: "Error authenticate" });
+    //   return;
+    // }
 
     //update
-    paciente.name = req.body.name || paciente.name;
-    paciente.owner = req.body.owner || paciente.owner;
-    paciente.email = req.body.email || paciente.email;
-    paciente.symptoms = req.body.symptoms || paciente.symptoms;
-    paciente.date = req.body.date || paciente.date;
+    patient.name = req.body.name || patient.name;
+    patient.owner = req.body.owner || patient.owner;
+    patient.email = req.body.email || patient.email;
+    patient.symptoms = req.body.symptoms || patient.symptoms;
+    patient.date = req.body.date || patient.date;
 
-    const pacienteUpdated = await paciente.save()
+    const pacienteUpdated = await patient.save()
     res.json(pacienteUpdated)
 
   } catch (error) {
@@ -83,24 +86,25 @@ export const updatePaciente = async (req, res) => {
   }
 };
 export const deletePaciente = async (req, res) => {
-  const { id } = req.params;
+  //const { id } = req.params;
+  const {patient} = req
 
   try {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ msg: "Invalid ID format" });
-    }
-    const paciente = await Paciente.findById(id);
+    // if (!mongoose.Types.ObjectId.isValid(id)) {
+    //   return res.status(400).json({ msg: "Invalid ID format" });
+    // }
+    // const paciente = await Paciente.findById(id);
     
-    if (!paciente) {
-      res.status(404).json({ msg: "Do not exist" });
-      return;
-    }
+    // if (!paciente) {
+    //   res.status(404).json({ msg: "Do not exist" });
+    //   return;
+    // }
 
-    if (paciente.veterinario._id.toString() !== req.veterinario.id.toString()) {
-      res.json({ msg: "Error authenticate" });
-      return;
-    }
-    await paciente.deleteOne();
+    // if (paciente.veterinario._id.toString() !== req.veterinario.id.toString()) {
+    //   res.json({ msg: "Error authenticate" });
+    //   return;
+    // }
+    await patient.deleteOne();
     res.json({ msg: "Deleted successfully" });
   } catch (error) {
     console.log(`======================`);

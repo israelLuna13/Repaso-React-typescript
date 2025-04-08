@@ -4,6 +4,8 @@ import emailRegister from "../helpers/emailRegister.js";
 import colors from "colors";
 import generateId from "../helpers/generateId.js";
 import emailForgotPassword from "../helpers/emailForgotPassword.js";
+
+
 export const register = async (req, res) => {
   const { email, name } = req.body;
 
@@ -32,44 +34,18 @@ export const register = async (req, res) => {
   }
 };
 
-export const profile = (req, res) => {
-  const { veterinario } = req;
-
-  res.json({ profile: veterinario });
-};
-
-export const confirmation = async (req, res) => {
-  const { token } = req.params;
-  try {
-    const UserConfirmation = await Veterinario.findOne({ token });
-
-    if (!UserConfirmation) {
-      const error = new Error("Invalid token");
-      res.status(400).json({ msg: error.message });
-      return;
-    }
-
-    UserConfirmation.token = null;
-    UserConfirmation.confirmed = true;
-    await UserConfirmation.save()
-    res.send("User confirmed successfully");
-  } catch (error) {
-    console.log(`======================`);
-    console.log(colors.bgRed.black.bold(error.message));
-    console.log(`======================`);
-  }
-};
-
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { password } = req.body;
+  const { userExist } = req;
+
 
   try {
-    const userExist = await Veterinario.findOne({ email });
-    if (!userExist) {
-      const error = new Error("User do not exist");
-      res.status(403).json({ msg: error.message });
-      return;
-    }
+    // const userExist = await Veterinario.findOne({ email });
+    // if (!userExist) {
+    //   const error = new Error("User do not exist");
+    //   res.status(403).json({ msg: error.message });
+    //   return;
+    // }
 
     //check if user is confirmed
     if (!userExist.confirmed) {
@@ -91,6 +67,30 @@ export const login = async (req, res) => {
     });
   } catch (error) {
     console.log(`======================`);
+
+    //console.log(colors.bgRed.black.bold(error.message));
+    console.log(`======================`);
+  }
+};
+
+export const confirmation = async (req, res) => {
+  //const { token } = req.params;
+  const { userToken } = req;
+  try {
+    // const UserConfirmation = await Veterinario.findOne({ token });
+
+    // if (!UserConfirmation) {
+    //   const error = new Error("Invalid token");
+    //   res.status(400).json({ msg: error.message });
+    //   return;
+    // }
+
+    userToken.token = null;
+    userToken.confirmed = true;
+    await userToken.save()
+    res.send("User confirmed successfully");
+  } catch (error) {
+    console.log(`======================`);
     console.log(colors.bgRed.black.bold(error.message));
     console.log(`======================`);
   }
@@ -98,24 +98,24 @@ export const login = async (req, res) => {
 
 //send email with token
 export const forgotPassword = async (req, res) => {
-  const { email} = req.body;
+  const { userExist } = req;
 
   try {
-    const existVeterinario = await Veterinario.findOne({ email });
-    if (!existVeterinario) {
-      const error = new Error("User do not exist");
-      res.status(400).json({ msg: error.message });
-      return;
-    }
+    // const existVeterinario = await Veterinario.findOne({ email });
+    // if (!existVeterinario) {
+    //   const error = new Error("User do not exist");
+    //   res.status(400).json({ msg: error.message });
+    //   return;
+    // }
 
-    existVeterinario.token = generateId();
-    await existVeterinario.save();
+    userExist.token = generateId();
+    await userExist.save();
 
     //send email
     emailForgotPassword({
-      email,
-      name: existVeterinario.name,
-      token: existVeterinario.token,
+      email:userExist.email,
+      name: userExist.name,
+      token: userExist.token,
     });
 
     res.json({ msg: "We have send email about instructions" });
@@ -127,31 +127,40 @@ export const forgotPassword = async (req, res) => {
 };
 //check token from email
 export const CheckToken = async (req, res) => {
-  const { token } = req.params;
-  const validToken = await Veterinario.findOne({ token });
+  //const { userToken } = req;
+    // const validToken = await Veterinario.findOne({ token });
 
-  if (validToken) {
+  // if (validToken) {
+  //   res.json({ msg: "Correct token" });
+  // } else {
+  //   const error = new Error("Invalid token");
+  //   res.status(400).json({ msg: error.message });
+  //   return;
+  // }
+
+  try {
     res.json({ msg: "Correct token" });
-  } else {
-    const error = new Error("Invalid token");
-    res.status(400).json({ msg: error.message });
-    return;
+  } catch (error) {
+    console.log(`======================`);
+    console.log(colors.bgRed.black.bold(error.message));
+    console.log(`======================`);
   }
+
 };
 export const newPassword = async (req, res) => {
-  const { token } = req.params;
+  const { userToken } = req;
   const { password } = req.body;
 
   try {
-    const veterinario = await Veterinario.findOne({ token });
-    if (!veterinario) {
-      const error = new Error("There is issuse");
-      res.status(400).json({ msg: error.message });
-      return;
-    }
-    veterinario.token = null;
-    veterinario.password = password;
-    await veterinario.save();
+    // const veterinario = await Veterinario.findOne({ token });
+    // if (!veterinario) {
+    //   const error = new Error("There is issuse");
+    //   res.status(4ß00).json({ msg: error.message });
+    //   return;
+    // }
+    userToken.token = null;
+    userToken.password = password;
+    await userToken.save();
     res.json({ msg: "Password changed successfully" });
   } catch (error) {
     console.log(`======================`);
@@ -163,9 +172,10 @@ export const newPassword = async (req, res) => {
 export const updateProfile= async(req,res)=>{
  
   const {email} = req.body
+  const {id} = req.params
 
   try {
-    const veterinario = await Veterinario.findById(req.params.id)
+    const veterinario = await Veterinario.findById(id)
     if(!veterinario)
     {
       const error = new Error('There is error')
@@ -228,3 +238,9 @@ export const updatePassword = async(req,res)=>{
   }
 
 }
+
+export const profile = (req, res) => {
+  const { veterinario } = req;
+
+  res.json({ profile: veterinario });
+};
