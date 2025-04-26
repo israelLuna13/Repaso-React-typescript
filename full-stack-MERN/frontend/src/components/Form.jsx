@@ -47,6 +47,11 @@ export default function Form() {
         setDate('')
         setSymptoms('')
         setId('')
+
+        setTimeout(()=>{
+            setAlert({})
+
+        },3000)
     }
     return (
         <>

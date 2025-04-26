@@ -29,7 +29,7 @@ export default function Register() {
       setAlert({ msg: 'The password is very short, add 6 characters', error: true })
       return
     }
-    // setAlert({})
+     setAlert({})
 
     //create user
     try {
@@ -40,7 +40,13 @@ export default function Register() {
         email,
         password
       })
-      setAlert({ msg: 'User created', error: false })
+
+      setAlert({ msg: 'User created. Check Your email', error: false })
+      setEmail('')
+      setName('')
+      setPassword('')
+      setRepitPassword('')
+
 
     } catch (error) {
       setAlert({ msg: error.response.data.msg, error: true })
