@@ -4,8 +4,8 @@ const musicNavigation = [
     {url:'/artists',text:'Artists',blank:false},
     {url:'/albums',text:'Albums',blank:false},
     {url:'/songs',text:'Songs',blank:false},
-    {url:'/playlists',text:'Plalists',blank:false},
-    {url:'/playlists-song',text:'Playlists Songs',blank:false},
+    {url:'/playlists',text:'Playlists',blank:false},
+    {url:'/playlists-songs',text:'Playlists Songs',blank:false},
     {url:'/likes',text:'Likes',blank:false},
     {url:'/play-history',text:'Play History',blank:false},
     {url:'/purchases',text:'Purchases',blank:false}

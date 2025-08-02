@@ -1,10 +1,25 @@
 import { useForm } from "react-hook-form";
 import Heading from "../../ui/Heading";
-import { createAlbum } from "../../server";
+import { createAlbum, getArtists } from "../../server";
 import ErrorMessage from "../../ui/ErrorMessage";
-import type { formAlbum } from "../../schema";
+import type { Artist, formAlbum } from "../../schema";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 export default function PageAlbumsNew() {
+  const [artists,setArtist] = useState<Artist[]>([])
+
+  useEffect(()=>{
+    async function fetchArtists(){
+      const response = await getArtists()
+      if(!response?.result || !response.valoration ){
+        toast.error(response?.message)
+        return
+      }
+      setArtist(response.data)
+      
+    }
+    fetchArtists()
+  })
   const {
     register,
     reset,
@@ -19,6 +34,8 @@ export default function PageAlbumsNew() {
   });
 
   const handleCreateAlbum = async (formData: formAlbum) => {
+    console.log(formData);
+    
     const response = await createAlbum(formData);
     if (!response?.result || !response?.valoration) {
       toast.error(response?.message);
@@ -82,20 +99,22 @@ export default function PageAlbumsNew() {
             <label className="text-slate-800" htmlFor="artist_id">
               Artist
             </label>
-            <input
-              type="text"
-              id="artist_id"
-              className="block w-full p-3 bg-slate-100"
-              placeholder="Release Year"
-              {...register("artist_id", {
-                required: "The year is required",
-                valueAsNumber: true,
+            <select  id="artist_id" {...register("artist_id",{
+              required:"The artist is required",
+               valueAsNumber: true,
                 minLength: {
                   value: 1,
-                  message: "You most to select an artist",
+                  message: "The id most be numeric",
                 },
-              })}
-            />
+            })} className="block w-full p-3 bg-slate-100">
+              <option value="">-- Choose Artist --</option>
+              {artists.map((artist)=>(
+                <option key={artist.id} value={artist.id}>
+                  {artist.name}
+                </option>
+              ))}
+            </select>
+         
             {errors.artist_id && (
               <ErrorMessage>{errors.artist_id.message}</ErrorMessage>
             )}
