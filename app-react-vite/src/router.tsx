@@ -11,6 +11,10 @@ import { PagePlayListSong } from "./views/playlist-songs/PagePlayListSong";
 import PagePlayListSongNew from "./views/playlist-songs/PagePlayListSongNew";
 import PagePlayList from "./views/playlists/PagePlayList";
 import PagePlayListNew from "./views/playlists/PagePlayListNew";
+import PageLikes from "./views/likes/PageLikes";
+import PageLikesNew from "./views/likes/PageLikesNew";
+import PagePlayHistory from "./views/play-hisyory/PagePlayHistory";
+import PagePlayHistoryNew from "./views/play-hisyory/PagePlayHistoryNew";
 
 export default function Router(){
 
@@ -29,12 +33,15 @@ export default function Router(){
                 <Route path="/songs/new" element={<PageSongsNew />} />
                 <Route path="/playlists" element={<PagePlayList/>} />
                 <Route path="/playlists/new" element={<PagePlayListNew />} />
-
                 <Route path="/playlists-songs" element={<PagePlayListSong />} />
-                <Route
-                  path="/playlists-songs/new"
-                  element={<PagePlayListSongNew />}
+                <Route path="/playlists-songs/new" element={<PagePlayListSongNew />}
                 />
+
+                    <Route path="/play-history" element={<PagePlayHistory />} />
+                <Route path="/play-history/new" element={<PagePlayHistoryNew />}
+                />
+                <Route path="/likes" element={<PageLikes/>}/>
+                <Route path="/likes/new" element={<PageLikesNew/>}/>
               </Route>
             </Route>
           </Routes>

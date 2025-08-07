@@ -43,7 +43,6 @@ export default function PagePlayListNew() {
     
   return (
    <>
-        <div>Álbumes:</div>
         <Heading>New Playlist</Heading>
         <div className="bg-white mt-10 px-5 py-10 rounded-md shadow-md max-w-3xl mx-auto">
           <form className="space-y-5" onSubmit={handleSubmit(handlePlayListCreate)}>
@@ -67,7 +66,7 @@ export default function PagePlayListNew() {
   
             <div className="space-y-2">
               <label htmlFor="user_id" className="text-slate-800">
-                Album
+                User
               </label>
                 <select  id="user_id"{...register("user_id")} className="block w-full p-3 bg-slate-100">
                 <option value="">-- Choose User</option>

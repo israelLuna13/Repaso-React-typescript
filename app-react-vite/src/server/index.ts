@@ -1,6 +1,6 @@
 import z from 'zod'
-import { albumApiResponseSchema, artistApiResponseSchema, playListApiResponseSchema, playListSongApiResponseSchema, resposeApi, songApiResponseSchema, userpiResponseSchema } from "../schema"
-import { albumSchemaCreate, artistSchemaCreate, playListSchemaCreate, playListSongsSchemaCreate, songSchemaCreate } from "../schema/schemas";
+import { albumApiResponseSchema, artistApiResponseSchema, likeApiResponseSchema, playHistoryApiResponseSchema, playListApiResponseSchema, playListSongApiResponseSchema, resposeApi, songApiResponseSchema, userpiResponseSchema } from "../schema"
+import { albumSchemaCreate, artistSchemaCreate, likeSchemaCreate, playHistorySchemaCreate, playListSchemaCreate, playListSongsSchemaCreate, songSchemaCreate } from "../schema/schemas";
 
 export async function  getArtists():Promise<z.infer<typeof artistApiResponseSchema> | undefined>{
     const res = await fetch(`${import.meta.env.VITE_API_URL}/artists`)
@@ -210,7 +210,6 @@ export async function getPlaylist():Promise<z.infer<typeof playListApiResponseSc
         })
       })
       const info_data = await info_create.json()
-      console.log(info_data);
       
       const parsed = resposeApi.safeParse(info_data)
       if (!parsed.success) {
@@ -241,34 +240,109 @@ export async function getPlaylist():Promise<z.infer<typeof playListApiResponseSc
   }
  }
 
-  // export const addSongPlaylist=async(data:unknown):Promise<z.infer<typeof resposeApi> | undefined>=>{
+ //----------------------------
+export const getLikes= async():Promise<z.infer<typeof likeApiResponseSchema>| undefined>=>{
 
-  //   try {
-  //     const result = playListSongsSchemaCreate.safeParse(data)
-  //     if(!result.success){
-  //        console.error("Datos no validos:", result.error);
-  //        return undefined
-  //     }
-  //     const info_create = await fetch(`${import.meta.env.VITE_API_URL}/playlists-songs`,{
-  //       method:'POST',
-  //       headers:{
-  //         'Content-type':'application/json'
-  //       },
-  //       body:JSON.stringify({
-  //         playlist_id:result.data.playlist_id,
-  //         song_id:result.data.song_id
-  //       })
-  //     })
-  //     const info_data = await info_create.json()
-  //     console.log(info_data);
-      
-  //     const parsed = resposeApi.safeParse(info_data)
-  //     if (!parsed.success) {
-  //       console.error("Respuesta inválida:", parsed.error);
-  //       return undefined;
-  //     }  
-  //     return parsed.data
-  //     } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/likes`)
+    const json = await res.json()
+    const result = likeApiResponseSchema.safeParse(json)
+    if(!result.success){
+       console.error("Respuesta inválida:", result.error);
+      return undefined
+    }
+
+    return result.data
+
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
+export const addLikeToSong= async(data:unknown):Promise<z.infer<typeof resposeApi>| undefined>=>{
+
+  try {
+    const result = likeSchemaCreate.safeParse(data)
+    if(!result.success){
+       console.error("Datos inválida:", result.error);
+      return undefined
+    }
+    const info_create = await fetch(`${import.meta.env.VITE_API_URL}/likes`,{
+      method:"POST",
+      headers:{
+          "Content-type":"application/json"
+      },
+      body:JSON.stringify({
+        user_id:result.data.user_id,
+        song_id:result.data.song_id
+      })
+    })
+
+    const info_data = await info_create.json()
+    
+    const parsed = resposeApi.safeParse(info_data)
+    if(!parsed.success){
+       console.error("Respuesta inválida:", parsed.error);
+        return undefined;
+    }
+    return parsed.data
+
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+//---------------------------------
+
+export const getPlayHistory= async():Promise<z.infer<typeof playHistoryApiResponseSchema>| undefined>=>{
+
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/play-history`)
+    const json = await res.json()
+    const result = playHistoryApiResponseSchema.safeParse(json)
+    if(!result.success){
+       console.error("Respuesta inválida:", result.error);
+      return undefined
+    }
+
+    return result.data
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+ export const createPlayHistory= async(data:unknown):Promise<z.infer<typeof resposeApi>| undefined>=>{
+
+  try {
+    const result = playHistorySchemaCreate.safeParse(data)
+    if(!result.success){
+       console.error("Datos inválida:", result.error);
+      return undefined
+    }
+    const info_create = await fetch(`${import.meta.env.VITE_API_URL}/play-history`,{
+      method:"POST",
+      headers:{
+          "Content-type":"application/json"
+      },
+      body:JSON.stringify({
+        user_id:result.data.user_id,
+        song_id:result.data.song_id
+      })
+    })
+
+    const info_data = await info_create.json()
+    
+    const parsed = resposeApi.safeParse(info_data)
+    if(!parsed.success){
+       console.error("Respuesta inválida:", parsed.error);
+        return undefined;
+    }
+    return parsed.data
+
+  } catch (error) {
+    console.log(error);
+    
+  }
+}

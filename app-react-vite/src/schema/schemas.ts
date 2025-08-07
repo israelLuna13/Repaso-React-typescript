@@ -69,10 +69,35 @@ export const userSchemaCreate=z.object({
       name: z.string().trim().min(1,"Name is required"),
       email: z.email().trim().min(1,"Email is required"),
 
-
 })
 export const userSchema=z.object({
     id:z.number(),
     name:z.string(),
     email:z.string()
 })
+
+//----------------------------------------------------
+
+export const likeSchemaCreate=z.object({
+    user_id:z.coerce.number().min(1,"User is required"),
+    song_id:z.coerce.number().min(1,"Song is required")
+})
+
+export const likesSchema=z.object({
+    id:z.number(),
+    user_name:z.string(),
+    song_name:z.string()
+})
+//----------------------------------------------------
+
+export const playHistorySchemaCreate=z.object({
+   user_id:z.coerce.number().min(1,"User is required"),
+   song_id:z.coerce.number().min(1,"Song is required")
+})
+export const playHistorySchema=z.object({
+    id:z.number(),
+    played_at:z.string(),
+    user_name:z.string(),
+    song_name:z.string()
+})
+//----------------------------------------------------
