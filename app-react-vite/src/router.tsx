@@ -1,5 +1,4 @@
 import { BrowserRouter,Route,Routes } from "react-router-dom";
-import App from "./App";
 import Layout from "./layout/Layout";
 import { PageArtists } from "./views/PageArtists";
 import { PageAlbums } from "./views/PageAlbums";
@@ -15,6 +14,9 @@ import PageLikes from "./views/likes/PageLikes";
 import PageLikesNew from "./views/likes/PageLikesNew";
 import PagePlayHistory from "./views/play-hisyory/PagePlayHistory";
 import PagePlayHistoryNew from "./views/play-hisyory/PagePlayHistoryNew";
+import LayoutAuth from "./layout/LayoutAuth";
+import ConfirmAccount from "./views/auth/ConfirmAccount";
+import { CreateAccountView } from "./views/auth/CreateAccountView";
 
 export default function Router(){
 
@@ -23,8 +25,11 @@ export default function Router(){
         <BrowserRouter>
           <Routes>
             <Route>
+              <Route element={<LayoutAuth/>}>
+                <Route path="/create-account" element={< CreateAccountView/>} />
+                 <Route path="/confirm-account" element={<ConfirmAccount />} />
+              </Route>
               <Route element={<Layout />}>
-                <Route path="/" element={<App />} />
                 <Route path="/artists" element={<PageArtists />} />
                 <Route path="/artists/new" element={<PageArtistsNew />} />
                 <Route path="/albums" element={<PageAlbums />} />

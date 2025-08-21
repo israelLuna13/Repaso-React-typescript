@@ -1,7 +1,73 @@
 import z from 'zod'
 import { albumApiResponseSchema, artistApiResponseSchema, likeApiResponseSchema, playHistoryApiResponseSchema, playListApiResponseSchema, playListSongApiResponseSchema, resposeApi, songApiResponseSchema, userpiResponseSchema } from "../schema"
-import { albumSchemaCreate, artistSchemaCreate, likeSchemaCreate, playHistorySchemaCreate, playListSchemaCreate, playListSongsSchemaCreate, songSchemaCreate } from "../schema/schemas";
+import { accountCreate, albumSchemaCreate, artistSchemaCreate, likeSchemaCreate, playHistorySchemaCreate, playListSchemaCreate, playListSongsSchemaCreate, songSchemaCreate, tokenSchema } from "../schema/schemas";
 
+export async function createAccount(data:unknown):Promise<z.infer<typeof resposeApi> | undefined>{
+
+  try {
+    const result = accountCreate.safeParse(data)
+    if(!result.success){
+ console.error("Respuesta inválida:", result.error);
+      return undefined
+    }
+
+    const info_create = await fetch(`${import.meta.env.VITE_API_URL}/auth/create-account`,{
+      method:'POST',
+      headers:{
+        'Content-type':'application/json'
+      },
+      body:JSON.stringify({
+        name:result.data.name,
+        email:result.data.email,
+        password:result.data.password
+      })
+    })
+    const info_data = await info_create.json()
+    console.log(info_data);
+    
+    const parsed = resposeApi.safeParse(info_data)
+    if(!parsed.success){
+       console.error("Respuesta inválida:", parsed.error);
+    return undefined;
+    }
+    return parsed.data
+    
+  } catch (error) {
+        console.log(error);
+
+  }
+}
+
+export async function confirmAccount(data:unknown):Promise<z.infer<typeof resposeApi> | undefined>{
+  try {
+    const result = tokenSchema.safeParse(data)
+    if(!result.success){
+ console.error("Invalid data:", result.error);
+      return undefined
+    }
+     const info_create = await fetch(`${import.meta.env.VITE_API_URL}/auth/confirm-account`,{
+      method:'POST',
+      headers:{
+        'Content-type':'application/json'
+      },
+      body:JSON.stringify({
+        token:result.data.token
+      })
+     })
+
+     const info_data = await info_create.json()
+     const parsed = resposeApi.safeParse(info_data)
+     if(!parsed.success){
+      console.error("Respuesta inválida:", parsed.error);
+    return undefined;
+     }
+     return parsed.data
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//----------------------------------------------------------
 export async function  getArtists():Promise<z.infer<typeof artistApiResponseSchema> | undefined>{
     const res = await fetch(`${import.meta.env.VITE_API_URL}/artists`)
     const json = await res.json()

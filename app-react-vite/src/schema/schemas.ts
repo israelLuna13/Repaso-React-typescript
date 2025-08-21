@@ -1,4 +1,15 @@
 import z from 'zod'
+export const newAccountSchema=z.object({
+    name:z.string(),
+    email:z.string(),
+    password:z.string()
+})
+export const accountCreate=newAccountSchema
+//---------------------------------------------------
+export const tokenSchema = z.object({
+    token:z.string()
+})
+//----------------------------------------------------
 const artistSchemaBase=z.object({
     name:z.string(),
     country:z.string()

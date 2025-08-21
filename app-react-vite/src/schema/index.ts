@@ -1,10 +1,19 @@
 import { createApiResponseSchema } from "./genericSchema";
-import { albumSchema, albumSchemaCreate, artistSchema, artistSchemaCreate, likeSchemaCreate, likesSchema, playHistorySchema, playHistorySchemaCreate, playListSchema, playListSchemaCreate, playListSongsSchema, playListSongsSchemaCreate, songSchema, songSchemaCreate, userSchema, userSchemaCreate } from "./schemas";
+import { albumSchema, albumSchemaCreate, artistSchema, artistSchemaCreate, likeSchemaCreate, likesSchema, newAccountSchema, playHistorySchema, playHistorySchemaCreate, playListSchema, playListSchemaCreate, playListSongsSchema, playListSongsSchemaCreate, songSchema, songSchemaCreate, tokenSchema, userSchema, userSchemaCreate } from "./schemas";
 import z, { never } from 'zod'
+
+
+export const newAccountResponseSchema=createApiResponseSchema(newAccountSchema)
+export type Account = z.infer<typeof newAccountSchema>
+//--------------------------------
+// export const confirmAccountResponseSchema=createApiResponseSchema(tokenSchema)
+export type Token = z.infer<typeof tokenSchema>
+//--------------------------------
 
 export const artistApiResponseSchema=createApiResponseSchema(artistSchema)
 export type Artist = z.infer<typeof artistSchema>;
 //--------------------------------
+
 
 export const albumApiResponseSchema=createApiResponseSchema(albumSchema)
 export type Album = z.infer<typeof albumSchema>;
@@ -46,3 +55,6 @@ export type formPlayListSong= z.input<typeof playListSongsSchemaCreate>
 export type formUser= z.input<typeof userSchemaCreate>
 export type formLike=z.input<typeof likeSchemaCreate>
 export type formPlayHistory=z.input<typeof playHistorySchemaCreate>
+
+export type formLogin = z.infer<typeof newAccountSchema>
+export type formConfirmAccount= z.infer<typeof tokenSchema>
