@@ -9,6 +9,17 @@ export const accountCreate=newAccountSchema
 export const tokenSchema = z.object({
     token:z.string()
 })
+//---------------------------------------------------
+export const loginSchemaBase=z.object({
+    email:z.string().trim().min(1,"Email is required"),
+    password:z.string().trim().min(1,"Password is required")
+})
+export const loginSchema=z.object({
+    token:z.string()
+})
+export const loginStart=loginSchemaBase
+//----------------------------------------------------
+
 //----------------------------------------------------
 const artistSchemaBase=z.object({
     name:z.string(),

@@ -17,6 +17,7 @@ import PagePlayHistoryNew from "./views/play-hisyory/PagePlayHistoryNew";
 import LayoutAuth from "./layout/LayoutAuth";
 import ConfirmAccount from "./views/auth/ConfirmAccount";
 import { CreateAccountView } from "./views/auth/CreateAccountView";
+import LoginView from "./views/auth/LoginView";
 
 export default function Router(){
 
@@ -26,6 +27,7 @@ export default function Router(){
           <Routes>
             <Route>
               <Route element={<LayoutAuth/>}>
+              <Route path="/" element={<LoginView/>}/>
                 <Route path="/create-account" element={< CreateAccountView/>} />
                  <Route path="/confirm-account" element={<ConfirmAccount />} />
               </Route>

@@ -1,6 +1,6 @@
 import z from 'zod'
-import { albumApiResponseSchema, artistApiResponseSchema, likeApiResponseSchema, playHistoryApiResponseSchema, playListApiResponseSchema, playListSongApiResponseSchema, resposeApi, songApiResponseSchema, userpiResponseSchema } from "../schema"
-import { accountCreate, albumSchemaCreate, artistSchemaCreate, likeSchemaCreate, playHistorySchemaCreate, playListSchemaCreate, playListSongsSchemaCreate, songSchemaCreate, tokenSchema } from "../schema/schemas";
+import { albumApiResponseSchema, artistApiResponseSchema, likeApiResponseSchema, loginResponseSchema, playHistoryApiResponseSchema, playListApiResponseSchema, playListSongApiResponseSchema, resposeApi, songApiResponseSchema, userpiResponseSchema } from "../schema"
+import { accountCreate, albumSchemaCreate, artistSchemaCreate, likeSchemaCreate, loginStart, playHistorySchemaCreate, playListSchemaCreate, playListSongsSchemaCreate, songSchemaCreate, tokenSchema } from "../schema/schemas";
 
 export async function createAccount(data:unknown):Promise<z.infer<typeof resposeApi> | undefined>{
 
@@ -37,6 +37,69 @@ export async function createAccount(data:unknown):Promise<z.infer<typeof respose
 
   }
 }
+//-----------------------
+export async function login(data:unknown):Promise<z.infer<typeof loginResponseSchema> | undefined>{
+
+  try {
+    const result = loginStart.safeParse(data)
+    if(!result.success){
+ console.error("Respuesta inválida:", result.error);
+      return undefined
+    }
+    
+
+    const info_create = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`,{
+      method:'POST',
+      headers:{
+        'Content-type':'application/json'
+      },
+      body:JSON.stringify({
+        email:result.data.email,
+        password:result.data.password
+      })
+    })
+    const info_data = await info_create.json()
+    console.log(info_data);
+    
+    const parsed = loginResponseSchema.safeParse(info_data)
+    if(!parsed.success){
+       console.error("Respuesta inválida:", parsed.error);
+    return undefined;
+    }
+    return parsed.data
+    
+  } catch (error) {
+        console.log(error);
+
+  }
+}
+
+//----------------------
+ export const getUsersAuth=async(token:string):Promise<z.infer<typeof userpiResponseSchema> | undefined>=>{
+
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/users`,{
+      method:'GET',
+      headers:{
+        'Content-type':'application/json',
+        'Authorization':`Bearer ${token}`
+      }
+    })
+    const json = await res.json()
+    
+    const result = userpiResponseSchema.safeParse(json)
+    if(!result.success){
+    console.error("Respuesta inválida:", result.error);
+      return undefined
+    }
+    return result.data
+
+  } catch (error) {
+    console.log(error);
+  }
+ }
+
+//-----------------------
 
 export async function confirmAccount(data:unknown):Promise<z.infer<typeof resposeApi> | undefined>{
   try {

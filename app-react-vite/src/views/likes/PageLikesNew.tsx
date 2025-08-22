@@ -24,13 +24,11 @@ export default function PageLikesNew() {
 
   const handleLikeCreate = async (data: formLike) => {
     const response = await addLikeToSong(data);
-    console.log(response);
     
     if (!response?.result || !response.valoration) {
       toast.error(response?.message);
     }
     toast.success(response?.message);
-    console.log(response?.message);
     
     reset();
   };
@@ -61,10 +59,6 @@ export default function PageLikesNew() {
     <Heading>Add Like</Heading>
       <div className="bg-white mt-10 px-5 py-10 rounded-md shadow-md max-w-3xl mx-auto">
               <form className="space-y-5" onSubmit={handleSubmit(handleLikeCreate)}>
-            
-      
-    
-      
                 <div className="space-y-2">
                   <label htmlFor="user_id" className="text-slate-800">
                     User

@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import Heading from "../../ui/Heading";
 import { useState } from "react";
-import type { formLogin } from "../../schema";
+import type { formCreateAccount } from "../../schema";
 import { toast } from "react-toastify";
 import { createAccount } from "../../server";
 
 export function CreateAccountView() {
-    const [formLogin,setFormLogin]=useState<formLogin>({
+    const [formLogin,setFormLogin]=useState<formCreateAccount>({
         name:'',
-
         email:'',
         password:''
     })
