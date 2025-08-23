@@ -18,20 +18,23 @@ import LayoutAuth from "./layout/LayoutAuth";
 import ConfirmAccount from "./views/auth/ConfirmAccount";
 import { CreateAccountView } from "./views/auth/CreateAccountView";
 import LoginView from "./views/auth/LoginView";
+import { AuthProvider } from './context/AuthProvider.tsx'
 
 export default function Router(){
 
     return (
       <>
         <BrowserRouter>
-          <Routes>
+
+<AuthProvider>
+            <Routes>
             <Route>
               <Route element={<LayoutAuth/>}>
               <Route path="/" element={<LoginView/>}/>
                 <Route path="/create-account" element={< CreateAccountView/>} />
                  <Route path="/confirm-account" element={<ConfirmAccount />} />
               </Route>
-              <Route element={<Layout />}>
+ <Route element={<Layout />}>
                 <Route path="/artists" element={<PageArtists />} />
                 <Route path="/artists/new" element={<PageArtistsNew />} />
                 <Route path="/albums" element={<PageAlbums />} />
@@ -50,8 +53,10 @@ export default function Router(){
                 <Route path="/likes" element={<PageLikes/>}/>
                 <Route path="/likes/new" element={<PageLikesNew/>}/>
               </Route>
+             
             </Route>
           </Routes>
+</AuthProvider>
         </BrowserRouter>
       </>
     );

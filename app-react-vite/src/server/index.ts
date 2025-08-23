@@ -78,7 +78,7 @@ export async function login(data:unknown):Promise<z.infer<typeof loginResponseSc
  export const getUsersAuth=async(token:string):Promise<z.infer<typeof userpiResponseSchema> | undefined>=>{
 
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/users`,{
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/user`,{
       method:'GET',
       headers:{
         'Content-type':'application/json',
@@ -86,6 +86,8 @@ export async function login(data:unknown):Promise<z.infer<typeof loginResponseSc
       }
     })
     const json = await res.json()
+    
+    console.log(json);
     
     const result = userpiResponseSchema.safeParse(json)
     if(!result.success){
@@ -132,7 +134,14 @@ export async function confirmAccount(data:unknown):Promise<z.infer<typeof respos
 
 //----------------------------------------------------------
 export async function  getArtists():Promise<z.infer<typeof artistApiResponseSchema> | undefined>{
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/artists`)
+  const token = localStorage.getItem('token')
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/artists`,{
+      method:'GET',
+      headers:{
+        'Content-type':'application/json',
+        'Authorization':`Bearer ${token}`
+      }
+    })
     const json = await res.json()
     const result = artistApiResponseSchema.safeParse(json)
 

@@ -2,28 +2,37 @@ import { useEffect, useState } from "react"
 import { getArtists } from "../server"
 import { type Artist } from "../schema"
 import Heading from "../ui/Heading"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import TableArtists from "../components/TableArtists"
 import { toast } from "react-toastify"
+import useAuth from "../hook/useAuth"
 
 export  function PageArtists(){
 
+    const navigate = useNavigate()
 
+    const {auth,load}=useAuth()
      const [artists,setArtist]=useState<Artist[]>([])
 
     useEffect(()=>{
-        async function fetchArtists(){
-            const data = await getArtists()
-                        
-            if(!data?.valoration || !data.result){
-                toast.error(data?.message)
-                return
+        if (load) return; // espera a que termine la validación del token//colocar spinner
+
+        if (auth.length === 0 && !load) navigate("/");
+        
+        async function fetchArtists() {
+            const data = await getArtists();
+
+            if (!data?.valoration || !data.result) {
+            toast.error(data?.message);
+            return;
             }
-            setArtist(data.data)
+            setArtist(data.data);
         }
-        fetchArtists()
+        fetchArtists();
+            
+        
     
-    },[])
+    },[auth,load,navigate])
     return(
         <>
         <Heading>Artists List </Heading>

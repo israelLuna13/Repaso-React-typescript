@@ -6,8 +6,12 @@ import { loginStart } from "../../schema/schemas";
 import ErrorMessage from "../../ui/ErrorMessage";
 import { login } from "../../server";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+// import useAuth from "../../hook/useAuth";
 
 export default function LoginView() {
+  // const {setAuth} = useAuth()
+  const navigate = useNavigate()
     const {
       register,
       reset,
@@ -27,7 +31,10 @@ export default function LoginView() {
     
       
      localStorage.setItem('token',response.data[0].token)
-      toast.success(response.message)
+    //  setAuth(response.data[])
+
+    navigate('/artists')
+      //toast.success(response.message)
       reset()
       
     }
